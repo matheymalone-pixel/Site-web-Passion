@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Passions — Aéronautique & Code</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky: #0a0f1e;
+      --horizon: #0d2137;
+      --accent: #00c8ff;
+      --gold: #f0a500;
+      --code-green: #39ff7e;
+      --white: #eef4ff;
+      --muted: #5a7a99;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--sky);
+      color: var(--white);
+      font-family: 'DM Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── STARS ── */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle { from { opacity: 0.1; } to { opacity: 0.9; } }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: linear-gradient(to bottom, rgba(10,15,30,0.95), transparent);
+      backdrop-filter: blur(4px);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-runway {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 4px; height: 45%;
+      background: linear-gradient(to top, var(--accent), transparent);
+      opacity: 0.3;
+    }
+    .hero-runway::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 30px var(--accent);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.6); opacity: 0.5; }
+    }
+
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: 0.03em;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+    .hero-title span { color: var(--accent); }
+    .hero-title .gold { color: var(--gold); }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.8;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+      animation: fadeUp 1s 0.35s ease both;
+    }
+    .btn {
+      padding: 0.8rem 2rem;
+      border-radius: 2px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--sky);
+      border: 2px solid var(--accent);
+    }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 2px solid var(--gold);
+    }
+    .btn-secondary:hover { background: var(--gold); color: var(--sky); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0 3rem;
+      margin: 0 auto;
+      max-width: 1100px;
+    }
+    .section-divider::before, .section-divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, var(--muted));
+    }
+    .section-divider::after { background: linear-gradient(to left, transparent, var(--muted)); }
+    .divider-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative; z-index: 1;
+      padding: 7rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── AERO SECTION ── */
+    .aero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 700px) { .aero-grid { grid-template-columns: 1fr; } }
+
+    .aero-card {
+      background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(0,200,255,0.02));
+      border: 1px solid rgba(0,200,255,0.15);
+      border-radius: 4px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .aero-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .aero-card:hover { border-color: rgba(0,200,255,0.4); transform: translateY(-4px); }
+    .aero-card:hover::before { opacity: 1; }
+    .aero-card .card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+    .aero-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; margin-bottom: 0.6rem;
+    }
+    .aero-card p { font-size: 0.8rem; color: var(--muted); line-height: 1.9; }
+
+    /* ── CODE SECTION ── */
+    .code-section { background: rgba(57,255,126,0.02); }
+
+    .terminal {
+      background: #0b1a12;
+      border: 1px solid rgba(57,255,126,0.2);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 3rem;
+      font-size: 0.82rem;
+    }
+    .terminal-bar {
+      background: #0f2118;
+      padding: 0.7rem 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+      border-bottom: 1px solid rgba(57,255,126,0.1);
+    }
+    .t-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .t-dot.red { background: #ff5f57; }
+    .t-dot.yellow { background: #ffbd2e; }
+    .t-dot.green { background: #28c940; }
+    .t-title { font-size: 0.65rem; color: var(--muted); margin-left: auto; letter-spacing: 0.1em; }
+
+    .terminal-body { padding: 1.5rem; line-height: 2.1; }
+    .t-comment { color: #3d6b50; }
+    .t-keyword { color: #ff79c6; }
+    .t-fn { color: var(--code-green); }
+    .t-string { color: var(--gold); }
+    .t-var { color: var(--accent); }
+    .t-num { color: #bd93f9; }
+    .cursor {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: var(--code-green);
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .code-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    @media (max-width: 700px) { .code-cards { grid-template-columns: 1fr; } }
+
+    .code-card {
+      border: 1px solid rgba(57,255,126,0.12);
+      border-radius: 4px;
+      padding: 1.5rem;
+      transition: all 0.3s;
+    }
+    .code-card:hover { border-color: rgba(57,255,126,0.35); background: rgba(57,255,126,0.04); }
+    .code-card .lang-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--code-green);
+      border: 1px solid rgba(57,255,126,0.3);
+      border-radius: 2px;
+      padding: 0.2rem 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .code-card h4 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .code-card p { font-size: 0.75rem; color: var(--muted); line-height: 1.8; }
+
+    /* ── ABOUT ── */
+    .about-wrap {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 700px) { .about-wrap { grid-template-columns: 1fr; } }
+
+    .about-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 8rem;
+      line-height: 1;
+      color: rgba(0,200,255,0.08);
+      text-align: center;
+    }
+    .about-text p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 2;
+      margin-bottom: 1rem;
+    }
+    .about-text strong { color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+    }
+    footer span { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">Passion<span style="color:var(--gold)">.</span></div>
+    <ul class="nav-links">
+      <li><a href="#aero">Aéronautique</a></li>
+      <li><a href="#code">Code</a></li>
+      <li><a href="#about">À propos</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-runway"></div>
+    <p class="hero-eyebrow">✦ Nos passions ✦</p>
+    <h1 class="hero-title">
+      <span>Voler</span><br>
+      &amp; <span class="gold">Coder</span>
+    </h1>
+    <p class="hero-sub">
+      Entre le ciel et la machine, deux passions se rencontrent —
+      l'aéronautique et le développement web.
+    </p>
+    <div class="hero-cta">
+      <a href="#aero" class="btn btn-primary">Découvrir</a>
+      <a href="#code" class="btn btn-secondary">Voir le code</a>
+    </div>
+  </div>
+
+  <!-- Aero Section -->
+  <div class="section-divider"><span class="divider-label">Section 01</span></div>
+  <section id="aero">
+    <p class="section-tag">✈ Aéronautique</p>
+    <h2 class="section-title">L'art de<br>voler</h2>
+    <p style="color:var(--muted); font-size:0.85rem; max-width:550px; line-height:2;">
+      L'aéronautique mêle physique, ingénierie et courage. Des premiers vols de Wright
+      aux avions supersoniques d'aujourd'hui, chaque machine est un chef-d'œuvre humain.
+    </p>
+    <div class="aero-grid">
+      <div class="aero-card">
+        <div class="card-icon">🛩️</div>
+        <h3>Principes du vol</h3>
+        <p>La portance, la traînée, la poussée et le poids — les 4 forces fondamentales qui permettent à un avion de quitter la terre.</p>
+      </div>
+      <div class="aero-card">
+        <div class="card-icon">🚀</div>
+        <h3>Propulsion</h3>
+        <p>Des moteurs à pistons aux réacteurs double flux, chaque système de propulsion est une révolution technologique en soi.</p>
+      </div>
+      <div class="aero-card">
+        <div class="card-icon">🌐</div>
+        <h3>Navigation</h3>
+        <p>GPS, ILS, VOR — la navigation aérienne est un mélange fascinant de technologie moderne et de techniques ancestrales.</p>
+      </div>
+      <div class="aero-card">
+        <div class="card-icon">🏗️</div>
+        <h3>Structures</h3>
+        <p>Alliages d'aluminium, fibre de carbone, titane… les matériaux aéronautiques doivent être légers, solides et résistants.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code Section -->
+  <div class="section-divider"><span class="divider-label">Section 02</span></div>
+  <section id="code" class="code-section">
+    <p class="section-tag" style="color:var(--code-green)">⌨ Développement</p>
+    <h2 class="section-title">L'art de<br><span style="color:var(--code-green)">coder</span></h2>
+
+    <!-- Terminal -->
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div>
+        <div class="t-dot yellow"></div>
+        <div class="t-dot green"></div>
+        <span class="t-title">passion.js — terminal</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-comment">// Notre mission : partager nos passions</span></div>
+        <div></div>
+        <div>
+          <span class="t-keyword">const</span>
+          <span class="t-var"> passions</span> = {
+        </div>
+        <div>&nbsp;&nbsp;<span class="t-string">"aéronautique"</span>: <span class="t-string">"explorer le ciel"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="t-string">"code"</span>: <span class="t-string">"construire le web"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="t-string">"astronomie"</span>: <span class="t-string">"observer l'univers"</span>,</div>
+        <div>&nbsp;&nbsp;<span class="t-string">"équipe"</span>: [<span class="t-string">"Jessica"</span>, <span class="t-string">"Mathey"</span>]</div>
+        <div>};</div>
+        <div></div>
+        <div>
+          <span class="t-fn">console</span>.<span class="t-fn">log</span>(<span class="t-string">"Bienvenue sur notre site 🚀"</span>);
+        </div>
+        <div><span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="code-cards">
+      <div class="code-card">
+        <span class="lang-badge">HTML</span>
+        <h4>Structure</h4>
+        <p>Le squelette de chaque page web. Les balises donnent du sens au contenu.</p>
+      </div>
+      <div class="code-card">
+        <span class="lang-badge">CSS</span>
+        <h4>Style</h4>
+        <p>La mise en forme, les couleurs, les animations — tout ce qui rend une page belle.</p>
+      </div>
+      <div class="code-card">
+        <span class="lang-badge">JS</span>
+        <h4>Interaction</h4>
+        <p>Le langage qui donne vie aux pages — boutons, effets, données dynamiques.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <div class="section-divider"><span class="divider-label">Section 03</span></div>
+  <section id="about">
+    <p class="section-tag">✦ À propos</p>
+    <h2 class="section-title">Qui<br>sommes-nous ?</h2>
+    <div class="about-wrap">
+      <div class="about-number">02</div>
+      <div class="about-text">
+        <p>
+          Nous sommes <strong>deux passionné(e)s</strong> qui ont décidé de créer un espace pour partager
+          ce qui nous fait vibrer : l'aéronautique, le code, l'astronomie et bien plus encore.
+        </p>
+        <p>
+          Ce site est notre terrain d'expérimentation — un projet en constante évolution,
+          construit <strong>brique par brique</strong>, article par article.
+        </p>
+        <p style="color:var(--accent);">
+          → Plus de contenus arrivent bientôt. Restez avec nous !
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    Fait avec <span>♥</span> &amp; beaucoup de café — <span>2025</span>
+  </footer>
+
+  <script>
+    // Generate stars
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 160; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        left:${Math.random()*100}%;
+        top:${Math.random()*100}%;
+        width:${size}px; height:${size}px;
+        --d:${(Math.random()*4+2).toFixed(1)}s;
+        animation-delay:${(Math.random()*5).toFixed(1)}s;
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.aero-card, .code-card, .terminal').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
